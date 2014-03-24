@@ -1,4 +1,4 @@
-# Accepted on 03/24/2014, Runtime: 120 ms 
+# Accepted on 03/24/2014, runtime: 120 ms 
 #
 # class TreeNode:
 #     def __init__(self, x):
