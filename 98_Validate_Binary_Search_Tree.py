@@ -1,4 +1,4 @@
-# 2015-04-08  Runtime: 102 ms
+# 2015-05-17  Runtime: 76 ms
 
 # Definition for a  binary tree node
 # class TreeNode:
@@ -11,9 +11,9 @@ class Solution:
     # @param root, a tree node
     # @return a boolean
     def isValidBST(self, root):
-        return self.check(root, -10**10, 10**10)
+        return self.check(root, None, None) # first None means infinitesimal, second None means infinite large
         
-    def check(self, node, lowerBound, upperBound):
-        if not node:
-            return lowerBound < upperBound
-        return lowerBound < node.val < upperBound and self.check(node.left, lowerBound, node.val) and self.check(node.right, node.val, upperBound)
+    def check(self, node, low, high):
+        if not node: return True
+        return (low == None or low < node.val) and (high == None or node.val < high) \
+            and self.check(node.left, low, node.val) and self.check(node.right, node.val, high)
