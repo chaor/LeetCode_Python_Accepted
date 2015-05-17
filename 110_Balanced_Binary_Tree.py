@@ -1,4 +1,4 @@
-# 2014-03-24  Runtime: 120 ms
+# 2015-05-17  Runtime: 88 ms
 
 # Definition for a  binary tree node
 # class TreeNode:
@@ -11,13 +11,13 @@ class Solution:
     # @param root, a tree node
     # @return a boolean
     def isBalanced(self, root):
-        return self.dfs(root)[0]
+        # -1 means unbalanced
+        return self.maxDepth(root) != -1
         
-    # @param node, a tree node
-    # @return a tuple (whether current node is balanced(boolean), node's height(int)), 
-    def dfs(self, node):
-        if not node:
-            return (True, 0)
-        LisBalanced, Lheight = self.dfs(node.left)
-        RisBalanced, Rheight = self.dfs(node.right)
-        return (LisBalanced and RisBalanced and abs(Lheight -Rheight) <= 1, max(Lheight, Rheight) + 1)
+    def maxDepth(self, node):
+        if not node: return 0
+        L = self.maxDepth(node.left)
+        if L == -1: return -1
+        R = self.maxDepth(node.right)
+        if R == -1: return -1
+        return max(L, R) + 1 if abs(L - R) <= 1 else -1
