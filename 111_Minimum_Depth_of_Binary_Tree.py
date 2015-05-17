@@ -1,6 +1,6 @@
-# 2015-03-19 Runtime: 109 ms
+# 2015-05-17  Runtime: 80 ms
 
-# Definition for a  binary tree node
+# Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, x):
 #         self.val = x
@@ -8,19 +8,10 @@
 #         self.right = None
 
 class Solution:
-    # @param root, a tree node
-    # @return an integer
+    # @param {TreeNode} root
+    # @return {integer}
     def minDepth(self, root):
-        if not root: 
-            return 0
-        self.minDep = 10 ** 10
-        self.solve(root, 1)
-        return self.minDep
-        
-    def solve(self, node, depth):
-        if not (node.left or node.right):
-            self.minDep = min(self.minDep, depth)
-        if node.left:
-            self.solve(node.left, depth + 1)
-        if node.right:
-            self.solve(node.right, depth + 1)
+        if not root: return 0
+        if not root.left: return self.minDepth(root.right) + 1
+        if not root.right: return self.minDepth(root.left) + 1
+        return min(self.minDepth(root.left), self.minDepth(root.right)) + 1
