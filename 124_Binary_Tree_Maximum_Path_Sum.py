@@ -1,6 +1,6 @@
-# 2014-03-04  Runtime: 217 ms
+# 2015-05-17  Runtime: 184 ms
 
-# Definition for a  binary tree node
+# Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, x):
 #         self.val = x
@@ -8,17 +8,16 @@
 #         self.right = None
 
 class Solution:
-    # @param root, a tree node
-    # @return an integer
+    # @param {TreeNode} root
+    # @return {integer}
     def maxPathSum(self, root):
-        self.maxSum = -10**10
-        self.dfs(root)
+        self.maxSum = -10 ** 10 # infinitesimal
+        self.findMax(root)
         return self.maxSum
         
-    def dfs(self, node):
-        # return maxPathSum only if current node is on the path
+    def findMax(self, node):
         if not node: return 0
-        maxLeft = self.dfs(node.left)
-        maxRight = self.dfs(node.right)
-        self.maxSum = max(self.maxSum, maxLeft + node.val + maxRight)
-        return max(0, maxLeft + node.val, node.val + maxRight)
+        LMax, RMax = self.findMax(node.left), self.findMax(node.right)
+        self.maxSum = max(self.maxSum, LMax + node.val + RMax)
+        ret = node.val + max(LMax, RMax)
+        return ret if ret > 0 else 0
