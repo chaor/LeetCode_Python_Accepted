@@ -1,23 +1,15 @@
-# 2014-12-23  Runtime: 208 ms
+# 2015-05-20  Runtime: 64 ms
 class Solution:
-    # @param tokens, a list of string
-    # @return an integer
+    # @param {string[]} tokens
+    # @return {integer}
     def evalRPN(self, tokens):
+        calc = {'+':lambda x, y: x + y, '-':lambda x, y: x - y, '*':lambda x, y: x * y, \
+                '/':lambda x, y: -(x / -y) if (x > 0 and y < 0) else -(-x / y) if (x < 0 and y > 0) else x / y}
         stack = []
         for token in tokens:
-            if token in ('+', '-', '*', '/'):
-                operand2, operand1 = stack.pop(), stack.pop()
-                if token == '+':
-                    stack.append(operand1 + operand2)
-                elif token == '-':
-                    stack.append(operand1 - operand2)
-                elif token == '*':
-                    stack.append(operand1 * operand2)
-                else:
-                    if (operand1 > 0 and operand2 < 0) or (operand1 < 0 and operand2 > 0):
-                        stack.append(-(abs(operand1) / abs(operand2)))
-                    else:
-                        stack.append(operand1 / operand2)
-            else:
+            if token not in calc:
                 stack.append(int(token))
+            else:
+                y, x = stack.pop(), stack.pop()
+                stack.append(calc[token](x,y))
         return stack[0]
