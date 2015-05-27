@@ -1,20 +1,20 @@
-# 2015-04-06  Runtime: 62 ms
+# 2015-05-26  Runtime: 56 ms
 
 class Solution:
-    # @param s, a string
-    # @return a list of strings
+    # @param {string} s
+    # @return {string[]}
     def restoreIpAddresses(self, s):
-        self.res = []
-        self.dfs(s, 0, '')
-        return self.res
+        self.answer, self.oneAnswer = [], []
+        self.dfs(s, 0)
+        return self.answer
         
-    def dfs(self, s, level, oneAnswer):
-        if level > 4: 
-            return
-        if level == 4:
-            if not s: self.res.append(oneAnswer[:-1]) # remove the last '.'
+    def dfs(self, ip, n):
+        if n == 4:
+            if ip == '': self.answer.append('.'.join(self.oneAnswer))
             return
         for i in xrange(1, 4):
-            # s[:i] == str(int(s[:i])) will remove leading zeros, for '010010', we don't want '01.0.0.10'
-            if len(s) >= i and 0 <= int(s[:i]) <= 255 and s[:i] == str(int(s[:i])):
-                self.dfs(s[i:], level + 1, oneAnswer + s[:i] + '.')
+            if len(ip) >= i: 
+                if 0 < int(ip[:i]) <= 255 and ip[:i][0] != '0' or ip[:i] == '0': # avoid '010', but we need to keep '0'
+                    self.oneAnswer.append(ip[:i])
+                    self.dfs(ip[i:], n + 1)
+                    self.oneAnswer.pop()
