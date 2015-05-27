@@ -1,4 +1,5 @@
 # 2015-05-27  Runtime: 60 ms
+
 class Solution:
     # @param {integer[]} nums
     # @return {integer}
