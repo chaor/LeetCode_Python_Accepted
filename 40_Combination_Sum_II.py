@@ -1,4 +1,5 @@
 # 2015-06-03  Runtime: 68 ms
+# thanks to https://leetcode.com/discuss/17932/dp-solution-in-python
 class Solution:
     # @param {integer[]} candidates
     # @param {integer} target
