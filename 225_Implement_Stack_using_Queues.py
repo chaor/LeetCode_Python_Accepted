@@ -1,4 +1,4 @@
-# 2015-06-10  Runtime: 36 ms
+# 2015-06-10  Runtime: 44 ms
 class Stack:
     # initialize your data structure here.
     def __init__(self):
@@ -13,7 +13,6 @@ class Stack:
 
     # @return nothing
     def pop(self):
-        self.stackTop = None
         for i in xrange(len(self.Q1) - 1):
             self.stackTop = self.Q1.popleft()
             self.Q2.append(self.stackTop)
