@@ -1,4 +1,5 @@
-# 2015-06-06  Runtime: 228 ms
+# 2015-07-31  Runtime: 304 ms
+
 # from http://cs.stackexchange.com/questions/2973/generalised-3sum-k-sum-problem
 #k-SUM can be solved more quickly as follows.
 
@@ -17,26 +18,25 @@ class Solution:
     # @param {integer} target
     # @return {integer[][]}
     def fourSum(self, nums, target):
-        if len(nums) < 4: return []
-        s = {} # key is sum, value is tuple(index1, index2)
+        # add every two numbers to get triplet (sum, firstIndex, secondIndex)
+        d = collections.defaultdict(list)
         for i in xrange(len(nums)):
             for j in xrange(i + 1, len(nums)):
-                Sum = nums[i] + nums[j]
-                if Sum in s:
-                    s[Sum].append((i, j))
-                else:
-                    s[Sum] = [(i, j)]
-        sortedKeys = sorted(s.keys())
-        L, R, result = 0, len(sortedKeys) - 1, set([])
+                d[nums[i] + nums[j]].append((i, j))
+
+        # now it's a 2sum problem, use two pointers
+        result = set()
+        L, R = 0, len(d) - 1
+        key = sorted(d.keys())
         while L <= R:
-            if sortedKeys[L] + sortedKeys[R] > target: R -= 1
-            elif sortedKeys[L] + sortedKeys[R] < target: L += 1
-            else:
-                for t1 in s[sortedKeys[L]]:
-                    for t2 in s[sortedKeys[R]]:
-                        if len( set([ t1[0], t1[1], t2[0], t2[1] ]) ) == 4:
-                            result.add(tuple(sorted([ t1[0], t1[1], t2[0], t2[1] ])))
+            if key[L] + key[R] == target:
+                for t1 in d[key[L]]:
+                    for t2 in d[key[R]]:
+                        if t1[0] not in (t2[0], t2[1]) and t1[1] not in (t2[0], t2[1]):
+                            result.add(tuple(sorted([nums[t1[0]], nums[t1[1]], nums[t2[0]], nums[t2[1]]])))
                 L, R = L + 1, R - 1
-        # 这里还要进行去重, index不重复不等于结果不重复
-        # 比如input Input: [-3,-2,-1,0,0,1,2,3], 0  Output: [[-3,0,1,2], [-3,0,1,2], ...]
-        return map(list, set([tuple(sorted([nums[t[0]], nums[t[1]], nums[t[2]], nums[t[3]]])) for t in result]) )
+            elif key[L] + key[R] < target:
+                L += 1
+            else:
+                R -= 1
+        return [list(item) for item in result]
