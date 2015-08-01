@@ -1,16 +1,15 @@
-# 2015-06-04  Runtime: 72 ms
-# thanks to https://leetcode.com/discuss/14436/concise-recursive-c-solution
+# 2015-08-01  Runtime: 52 ms
 class Solution:
     # @param {integer} n
     # @return {string[]}
     def generateParenthesis(self, n):
+        # thanks to https://leetcode.com/discuss/43122/4-7-lines-python
+        def gen(L, R, s):
+            # L, R is available left/right parenthesis number
+            if R >= L >= 0:
+                if R == 0: self.result.append(s)
+                gen(L - 1, R, s + '(')
+                gen(L, R - 1, s + ')')
         self.result = []
-        self.dfs([], n, 0)
+        gen(n, n, '')
         return self.result
-        
-    def dfs(self, L, remainingLeftParen, remainingRightParen):
-        if remainingLeftParen == remainingRightParen == 0:
-            self.result.append(''.join(L))
-            return
-        if remainingLeftParen > 0: self.dfs(L + ['('], remainingLeftParen - 1, remainingRightParen + 1)
-        if remainingRightParen > 0: self.dfs(L + [')'], remainingLeftParen, remainingRightParen - 1)
