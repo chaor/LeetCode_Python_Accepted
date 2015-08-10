@@ -1,25 +1,20 @@
-# 2015-06-10  Runtime: 80 ms
+# 2015-08-09  Runtime: 60 ms
 class Solution:
     # @param {integer[]} nums
     # @return {void} Do not return anything, modify nums in-place instead.
     def nextPermutation(self, nums):
-        # 从右往左找到第一个下降的数，比如是2，然后再从右往左找出比2大的数，比如是5
-        # 交换2，5，再对5后面的数列reverse，这样就得到一个高位(2所在的位置)增加后的最小的后续值
-        firstAscend = -1
-        for i in xrange(len(nums) - 2, -1, -1):
-            if nums[i] < nums[i + 1]:
-                firstAscend = i
-                break
-        # 如果firstAscend == -1, 则整个nums是降序的，直接reverse就好了
-        if firstAscend != -1:
-            j = None
-            for i in xrange(len(nums) - 1, -1, -1):
-                if nums[i] > nums[firstAscend]:
-                    j = i
-                    break
-            nums[firstAscend], nums[j] = nums[j], nums[firstAscend]
-        # 对firstAscend位置后面的数进行reverse    
-        L, R = firstAscend + 1, len(nums) - 1
-        while L < R:
-            nums[L], nums[R] = nums[R], nums[L]
-            L, R = L + 1, R - 1
+        # Find the highest index i such that nums[i] < nums[i+1], call nums[i] violated number
+        i = len(nums) - 2
+        while i >= 0:
+            if nums[i] < nums[i + 1]: break
+            i -= 1
+        # If no such index exists, the permutation is the last permutation.
+        if i == -1:
+            nums.reverse()
+            return
+        # reverse all numbers after violated number
+        nums[i + 1:] = nums[len(nums) - 1: i: -1]
+        # find the 1st number larger than the violated number
+        j = bisect.bisect_right(nums, nums[i], lo = i + 1, hi = len(nums))
+        # swap these two numbers
+        nums[i], nums[j] = nums[j], nums[i]
