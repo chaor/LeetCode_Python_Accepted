@@ -1,17 +1,15 @@
-# 2015-04-16  Runtime: 138 ms
+# 2015-08-15  Runtime: 132 ms
 
 class Solution:
-    # @param num, a list of integer
-    # @return a list of lists of integers
-    def permuteUnique(self, num):
-        if len(num) == 0: return []
-        if len(num) == 1: return [num]
-        num.sort()
-        prevNum, res = None, []
-        for i in xrange(len(num)):
-            if num[i] == prevNum: continue
-            prevNum = num[i]
-            # num[:i] + num[i+1:] is a copy of num without num[i]
-            for subPermutation in self.permuteUnique(num[:i] + num[i+1:]):  
-                res.append(subPermutation + [num[i]])
+    # @param {integer[]} nums
+    # @return {integer[][]}
+    def permuteUnique(self, A):
+        if len(A) == 1: return [A]
+        A.sort()
+        res, prev = [], None
+        for i in xrange(len(A)):
+            if A[i] == prev: continue
+            prev = A[i]
+            for x in self.permuteUnique(A[:i] + A[i + 1:]):
+                res.append([A[i]] + x)
         return res
