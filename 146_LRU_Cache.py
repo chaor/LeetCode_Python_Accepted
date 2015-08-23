@@ -1,4 +1,4 @@
-# 2015-08-18  Runtime: 216 ms
+# 2015-08-18  Runtime: 200 ms
 class LRUCache:
     # dictionary + doubly linked list, see the picture in http://www.programcreek.com/2013/03/leetcode-lru-cache-java/
     class Node:
@@ -16,7 +16,8 @@ class LRUCache:
     def get(self, key):
         if key not in self._d:
             return -1
-        self._insertNodeAtFirst(self._unlinkNode(self._d[key]))
+        self._unlinkNode(self._d[key])
+        self._insertNodeAtFirst(self._d[key])
         return self._d[key].val
 
     # @param key, an integer
@@ -24,7 +25,8 @@ class LRUCache:
     # @return nothing
     def set(self, key, val):
         if key in self._d:
-            self._insertNodeAtFirst(self._unlinkNode(self._d[key]))
+            self._unlinkNode(self._d[key])
+            self._insertNodeAtFirst(self._d[key])
             self._d[key].val = val
         else:
             if self._size == self._capacity:
@@ -40,7 +42,6 @@ class LRUCache:
         node.next.prev = node.prev
         node.prev = None
         node.next = None
-        return node
 
     def _insertNodeAtFirst(self, node):
         node.prev = self._head
