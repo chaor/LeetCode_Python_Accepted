@@ -1,14 +1,16 @@
-# 2015-06-27  Runtime: 52 ms
-class Solution:
-    # @param {integer} s
-    # @param {integer[]} nums
-    # @return {integer}
+# 2015-08-23  Runtime: 52 ms
+class Solution(object):
     def minSubArrayLen(self, s, nums):
-        Sum, minLen, j = 0, len(nums) + 1, 0
-        for i in xrange(len(nums)):
-            Sum += nums[i]
+        """
+        :type s: int
+        :type nums: List[int]
+        :rtype: int
+        """
+        Sum, L, minLen = 0, 0, 10 ** 10 # infinity
+        for R in xrange(len(nums)):
+            Sum += nums[R]
             while Sum >= s:
-                minLen = min(minLen, i - j + 1)
-                Sum -= nums[j]
-                j += 1
-        return 0 if minLen == len(nums) + 1 else minLen
+                if R - L + 1 < minLen: minLen = R - L + 1
+                Sum -= nums[L]
+                L += 1
+        return minLen if minLen != 10 ** 10 else 0
