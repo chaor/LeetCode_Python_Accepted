@@ -1,17 +1,22 @@
-# 2015-04-14  Runtime: 188 ms
-
-class Solution:
-    # @param S, a string
-    # @param T, a string
-    # @return an integer
-    def numDistinct(self, S, T):
-        # dp[m][n] is number of distince subsequences of first m letters of T in first n letters of S
-        dp = [[0 for x in xrange(len(S) + 1)] for y in xrange(len(T) + 1)]
-        # dp[0][*] = 1 because empty string is subsequence of any string
-        for i in xrange(len(S) + 1): dp[0][i] = 1 
-        # outer loop scans T, inner loop scans S
-        # for inner loop, start from the same length place with outer loop
-        for i in xrange(1, len(T) + 1):
-            for j in xrange(i, len(S) + 1):
-                dp[i][j] = dp[i][j-1] if T[i-1] != S[j-1] else dp[i-1][j-1] + dp[i][j-1]
-        return dp[len(T)][len(S)]
+# 2015-08-30  63 tests, 132 ms
+class Solution(object):
+    def numDistinct(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: int
+        """
+        # Let dp[i][j] be number of distinct subsequences for first i letters of s, first j letters of t
+        # if s[i - 1] != t[j - 1], then dp[i][j] = dp[i - 1][j]
+        # if s[i - 1] == t[j - 1], then dp[i][j] = dp[i - 1][j] + dp[i - 1][j - 1]
+        # based on this, we can just use one-dimension dp array: 
+        # len(dp) = len(t) + 1, dp[0] = 1
+        # if s[i - 1] == t[j - 1], then dp[j] = dp[j] + dp[j - 1],  1 <= j <= len(t)
+        lenS, lenT = len(s), len(t)
+        dp = [0 for i in xrange(lenT + 1)]
+        dp[0] = 1
+        for i in xrange(lenS):
+            for j in reversed(xrange(1, lenT + 1)):
+                if s[i] == t[j - 1]:
+                    dp[j] = dp[j] + dp[j - 1]
+        return dp[lenT]
