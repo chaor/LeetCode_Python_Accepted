@@ -1,25 +1,15 @@
-# 2015-05-19  Runtime: 52 ms
-class Solution:
-    # @param {integer} n
-    # @return {integer[][]}
+# 2015-08-30  Runtime: 64 ms
+# thanks to https://leetcode.com/discuss/46720/4-9-lines-python-solutions
+class Solution(object):
     def generateMatrix(self, n):
-        if n == 0: return []
-        matrix = [[None for i in xrange(n)] for j in xrange(n)]
-        rows, cols = n, n
-        direct = ((0, 1), (1, 0), (0, -1), (-1, 0)) # go right, go down, go left, go up
-        currRow, currCol, currDirect, number = 0, -1, 0, 1 # at first we go right
-        while True:
-            for i in xrange(cols):
-                currRow, currCol = currRow + direct[currDirect][0], currCol + direct[currDirect][1]
-                matrix[currRow][currCol] = number
-                number += 1
-                if number > n * n: return matrix
-            rows -= 1
-            currDirect = (currDirect + 1) % 4 # change direction
-            for i in xrange(rows):
-                currRow, currCol = currRow + direct[currDirect][0], currCol + direct[currDirect][1]
-                matrix[currRow][currCol] = number
-                number += 1
-                if number > n * n: return matrix
-            cols -= 1
-            currDirect = (currDirect + 1) % 4 # change direction
+        """
+        :type n: int
+        :rtype: List[List[int]]
+        """
+        i, j, di, dj, m = 0, 0, 0, 1, [[0] * n for i in xrange(n)]
+        for x in xrange(1, n * n + 1):
+            m[i][j] = x
+            if m[(i + di) % n][(j + dj) % n]: # if there's already a number in m, turn right
+                di, dj = dj, -di
+            i, j = i + di, j + dj
+        return m
