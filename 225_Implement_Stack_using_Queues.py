@@ -1,26 +1,35 @@
-# 2015-06-10  Runtime: 44 ms
-class Stack:
-    # initialize your data structure here.
+# 2015-09-12  Runtime: 40 ms
+class Stack(object):
     def __init__(self):
-        self.Q, self.stackTop = collections.deque(), None
-        
-    # @param x, an integer
-    # @return nothing
+        """
+        initialize your data structure here.
+        """
+        self.queue = collections.deque()
+
     def push(self, x):
-        self.Q.append(x)
-        self.stackTop = x
+        """
+        :type x: int
+        :rtype: nothing
+        """
+        self.queue.append(x)
+        for i in xrange(len(self.queue) - 1):
+            self.queue.append(self.queue.popleft())
 
-    # @return nothing
     def pop(self):
-        for i in xrange(len(self.Q) - 1):
-            self.stackTop = self.Q.popleft()
-            self.Q.append(self.stackTop)
-        self.Q.popleft()
+        """
+        :rtype: nothing
+        """
+        self.queue.popleft()
 
-    # @return an integer
     def top(self):
-        return self.stackTop
+        """
+        :rtype: int
+        """
+        return self.queue[0]
 
-    # @return an boolean
     def empty(self):
+        """
+        :rtype: bool
+        """
+        return not self.queue
         return not self.Q
