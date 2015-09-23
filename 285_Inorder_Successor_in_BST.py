@@ -1,4 +1,4 @@
-# 2015-09-22  Runtime: 172 ms
+# 2015-09-22  Runtime: 116 ms
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -13,13 +13,17 @@ class Solution(object):
         :type p: TreeNode
         :rtype: TreeNode
         """
-        stack, curr, prev = [], root, None
-        while stack or curr:
-            while curr:
-                stack.append(curr)
-                curr = curr.left
-            curr = stack.pop()
-            if prev == p: return curr
-            prev = curr
-            curr = curr.right
-        return None
+        # thanks to https://leetcode.com/discuss/59728/10-lines-o-h-java-c
+        if p.right:
+            p = p.right
+            while p.left:
+                p = p.left
+            return p
+        candidate = None
+        while root != p:
+            if p.val < root.val:
+                candidate = root
+                root = root.left
+            else:
+                root = root.right
+        return candidate
