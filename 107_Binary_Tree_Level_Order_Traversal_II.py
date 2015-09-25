@@ -1,23 +1,25 @@
-# 2015-04-14  Runtime: 61 ms
-
-# Definition for a  binary tree node
-# class TreeNode:
+# 2015-09-25  Runtime: 56 ms
+# Definition for a binary tree node.
+# class TreeNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.left = None
 #         self.right = None
 
-class Solution:
-    # @param root, a tree node
-    # @return a list of lists of integers
+class Solution(object):
     def levelOrderBottom(self, root):
-        self.res = []
-        self.preOrder(root, 0)
-        return self.res
-        
-    def preOrder(self, node, depth):
-        if not node: return
-        if len(self.res) == depth: self.res.insert(0, [])
-        self.res[-depth - 1].append(node.val)
-        self.preOrder(node.left, depth + 1)
-        self.preOrder(node.right, depth + 1)
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+        if not root: return []
+        res, queue = [], collections.deque([root])
+        while queue:
+            level = []
+            for i in xrange(len(queue)):
+                x = queue.popleft()
+                level.append(x.val)
+                if x.left: queue.append(x.left)
+                if x.right: queue.append(x.right)
+            res.append(level)
+        return res[::-1]
