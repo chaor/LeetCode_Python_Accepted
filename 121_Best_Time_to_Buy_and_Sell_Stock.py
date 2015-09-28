@@ -1,14 +1,14 @@
-# 2015-03-30  Runtime: 97 ms
-
-class Solution:
-    # @param prices, a list of integer
-    # @return an integer
+# 2015-09-28  Runtime: 60 ms
+class Solution(object):
     def maxProfit(self, prices):
-        # find the max diff, the larger number must come after the smaller number
-        if not prices:
-            return 0
-        minPrice, diff = 10**10, -10**10
-        for price in prices:
-            minPrice = min(minPrice, price)
-            diff = max(diff, price - minPrice)
-        return diff
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        minPrice, res = sys.maxint, 0
+        for p in prices:
+            if p < minPrice:
+                minPrice = p
+            if p - minPrice > res:
+                res = p - minPrice
+        return res
