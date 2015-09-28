@@ -1,13 +1,12 @@
-# 2015-03-30  Runtime: 98 ms
-
-class Solution:
-    # @param prices, a list of integer
-    # @return an integer
+# 2015-09-28  Runtime: 60 ms
+class Solution(object):
     def maxProfit(self, prices):
-        if len(prices) <= 1:
-            return 0
-        profit = 0
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        res = 0
         for i in xrange(1, len(prices)):
-            if prices[i] > prices[i-1]:
-                profit += prices[i] - prices[i-1]
-        return profit
+            if prices[i] > prices[i - 1]:
+                res += prices[i] - prices[i - 1]
+        return res
