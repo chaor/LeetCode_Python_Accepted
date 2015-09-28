@@ -1,17 +1,14 @@
-# 2015-03-23  Runtime: 72 ms
-
-class Solution:
-    # @param triangle, a list of lists of integers
-    # @return an integer
+# 2015-09-28  Runtime: 52 ms
+class Solution(object):
     def minimumTotal(self, triangle):
-        upper_level_dp = [None for k in xrange(len(triangle))]
-        upper_level_dp[0] = triangle[0][0]
-        dp = upper_level_dp[:]
-        for row in triangle:
-            if len(row) == 1: continue
-            dp[0] = upper_level_dp[0] + row[0]
-            for i in xrange(1, len(row)-1):
-                dp[i] = row[i] + min(upper_level_dp[i], upper_level_dp[i-1])
-            dp[len(row)-1] = row[-1] + upper_level_dp[len(row)-2]
-            upper_level_dp = dp[:]
-        return min(dp)
+        """
+        :type triangle: List[List[int]]
+        :rtype: int
+        """
+        res = [10 ** 10] * len(triangle) # infinity
+        res[0] = triangle[0][0]
+        for i in xrange(1, len(triangle)):
+            for j in xrange(i, 0, -1):
+                res[j] = min(res[j], res[j - 1]) + triangle[i][j]
+            res[0] += triangle[i][0]
+        return min(res)
