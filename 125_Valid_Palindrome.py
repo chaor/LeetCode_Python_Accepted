@@ -1,13 +1,10 @@
-# 2015-03-19 Runtime: 92 ms
-
-class Solution:
-    # @param s, a string
-    # @return a boolean
+# 2015-09-29  Runtime: 76 ms
+class Solution(object):
     def isPalindrome(self, s):
-        alphanumericS = []
-        for i in xrange(len(s)):
-            if 'a' <= s[i] <= 'z' or '0' <= s[i] <= '9':
-                alphanumericS.append(s[i])
-            elif 'A' <= s[i] <= 'Z':
-                alphanumericS.append(chr(ord(s[i]) - ord('A') + ord('a')))
-        return alphanumericS == alphanumericS[::-1]
+        """
+        :type s: str
+        :rtype: bool
+        """
+        s = [ch.lower() for ch in s if ch.isalnum()]
+        return s == s[::-1]
+        
