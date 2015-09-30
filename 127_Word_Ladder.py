@@ -1,22 +1,22 @@
-# 2015-04-18  Runtime: 750 ms
-
-class Solution:
-    # @param beginWord, a string
-    # @param endWord, a string
-    # @param wordDict, a set<string>
-    # @return an integer
-    def ladderLength(self, beginWord, endWord, wordDict):
-        wordLength = len(beginWord)
-        # store tuple (word, transformation times) in a queue, use BFS
-        Q = collections.deque([(beginWord, 1)])
-        while Q:
-            word, transformationTimes = Q.popleft()
-            for i in xrange(wordLength):
-                for oneLetter in 'abcdefghijklmnopqrstuvwxyz':
-                    if oneLetter == word[i]: continue
-                    newWord = word[:i] + oneLetter + word[i+1:]
-                    if newWord == endWord: return transformationTimes + 1
-                    if newWord in wordDict:
-                        Q.append((newWord, transformationTimes + 1))
-                        wordDict.remove(newWord)
+# 2015-09-30  Runtime: 456 ms
+class Solution(object):
+    def ladderLength(self, beginWord, endWord, wordList):
+        """
+        :type beginWord: str
+        :type endWord: str
+        :type wordList: Set[str]
+        :rtype: int
+        """
+        # queue will store (word, number of transitions)
+        queue, wordLen = collections.deque([(beginWord, 1)]), len(beginWord)
+        while queue:
+            w = queue.popleft()
+            for i in xrange(wordLen):
+                firstHalf, secondHalf = w[0][:i], w[0][i + 1:]
+                for ch in 'abcdefghijklmnopqrstuvwxyz':
+                    newWord = firstHalf + ch + secondHalf
+                    if newWord == endWord: return w[1] + 1
+                    if newWord in wordList:
+                        queue.append((newWord, w[1] + 1))
+                        wordList.remove(newWord)
         return 0
