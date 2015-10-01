@@ -1,33 +1,29 @@
-# 2015-03-27  Runtime: 248 ms  BFS
-
-class Solution:
-    # @param board, a 2D array
-    # Capture all regions by modifying the input board in-place.
-    # Do not return any value.
+# 2015-10-01  Runtime: 148 ms
+class Solution(object):
     def solve(self, board):
+        """
+        :type board: List[List[str]]
+        :rtype: void Do not return anything, modify board in-place instead.
+        """
         if not board: return
-        rowNum, colNum = len(board), len(board[0])
-        visited = [[False for j in xrange(colNum)] for i in xrange(rowNum)]
-        Q = collections.deque()
-        for i in xrange(rowNum):
-            if board[i][0] == 'O': Q.append((i,0))
-            if board[i][colNum - 1] == 'O': Q.append((i, colNum - 1))
-        for i in xrange(colNum):
-            if board[0][i] == 'O': Q.append((0, i))
-            if board[rowNum - 1][i] == 'O': Q.append((rowNum - 1, i))
-        while Q:
-            cur = Q.popleft()
-            board[cur[0]][cur[1]] = 'E' # mark 'O' on the edge as 'E'
-            visited[cur[0]][cur[1]] = True
-            if cur[0] > 0 and not visited[cur[0] - 1][cur[1]] and board[cur[0] - 1][cur[1]] == 'O':
-                Q.append((cur[0] - 1, cur[1]))
-            if cur[0] < rowNum - 1 and not visited[cur[0] + 1][cur[1]] and board[cur[0] + 1][cur[1]] == 'O':
-                Q.append((cur[0] + 1, cur[1]))
-            if cur[1] > 0 and not visited[cur[0]][cur[1] - 1] and board[cur[0]][cur[1] - 1] == 'O':
-                Q.append((cur[0], cur[1] - 1))
-            if cur[1] < colNum - 1 and not visited[cur[0]][cur[1] + 1] and board[cur[0]][cur[1] + 1] == 'O':
-                Q.append((cur[0], cur[1] + 1))
-        for i in xrange(rowNum):
-            for j in xrange(colNum):
+        M, N = len(board), len(board[0])
+        queue = collections.deque()
+        for i in xrange(M):
+            if board[i][0] == 'O': queue.append((i, 0))
+            if board[i][N - 1] == 'O': queue.append((i, N - 1))
+        for j in xrange(N):
+            if board[0][j] == 'O': queue.append((0, j))
+            if board[M - 1][j] == 'O': queue.append((M - 1, j))
+        while queue:
+            row, col = queue.popleft()
+            if row < 0 or row >= M or col < 0 or col >= N or board[row][col] != 'O':
+                continue
+            board[row][col] = 'E' # mark it as "edge"
+            queue.append((row + 1, col))
+            queue.append((row - 1, col))
+            queue.append((row, col + 1))
+            queue.append((row, col - 1))
+        for i in xrange(M):
+            for j in xrange(N):
                 if board[i][j] == 'O': board[i][j] = 'X'
                 if board[i][j] == 'E': board[i][j] = 'O'
