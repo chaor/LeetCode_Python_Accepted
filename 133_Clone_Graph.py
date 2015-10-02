@@ -1,4 +1,4 @@
-# 2015-05-21
+# 2015-10-1
 # Definition for a undirected graph node
 # class UndirectedGraphNode:
 #     def __init__(self, x):
@@ -23,23 +23,21 @@ class Solution:
             self.d[n].neighbors.append(self.dfs(neighbor))
         return self.d[n]
 
-############BFS  Runtime: 172 ms###############
-class Solution:
-    # @param node, a undirected graph node
-    # @return a undirected graph node
+############ BFS  Runtime: 84 ms ###############
+class Solution(object):
     def cloneGraph(self, node):
+        """
+        :type node: UndirectedGraphNode
+        :rtype: UndirectedGraphNode
+        """
         if not node: return None
+        d = {node.label: UndirectedGraphNode(node.label)} # key is label, value is node
         queue = collections.deque([node])
-        d = {node: UndirectedGraphNode(node.label)} # key is original node, value is its copy
         while queue:
-            # the poped node must be already in the dictionary d.
-            poped = queue.popleft()
+            poped = queue.popleft()  # poped node must be in d
             for neighbor in poped.neighbors:
-                if neighbor in d: d[poped].neighbors.append(d[neighbor])
-                else:
-                    neighborCopy = UndirectedGraphNode(neighbor.label)
-                    d[neighbor] = neighborCopy
-                    d[poped].neighbors.append(neighborCopy)
-                    # only put new found nodes into queue, otherwise we will get infinite loop, think two-node graph 0 -- 1
+                if neighbor.label not in d: # new node found!
+                    d[neighbor.label] = UndirectedGraphNode(neighbor.label)
                     queue.append(neighbor)
-        return d[node]
+                d[poped.label].neighbors.append(d[neighbor.label])    
+        return d[node.label]
