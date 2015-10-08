@@ -1,19 +1,20 @@
-# 2015-02-02  Runtime: 40 ms
-
-class Solution:
-    # @param s, a string
-    # @param dict, a set of string
-    # @return a boolean
-    def wordBreak(self, s, dict):
-        if not dict: return False
-        
+# 2015-10-08  Runtime: 40 ms
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: Set[str]
+        :rtype: bool
+        """
+        if not s: return True
+        if not wordDict: return False
+        minLen, maxLen, lenS = len(min(wordDict, key = len)), len(max(wordDict, key = len)), len(s)
         # dp[i] == True means first i letters of s can be segmented
-        dp = [False for i in xrange(len(s) + 1)]
+        dp = [False] * (lenS + 1)
         dp[0] = True
-        maxDictWordLen = len(max(dict, key = len))
-        for i in xrange(1, len(s) + 1):
-            for j in xrange(1, maxDictWordLen + 1):
-                if i >= j:
-                    if dp[i - j] and s[i-j:i] in dict:
-                        dp[i] = True
-        return dp[len(s)]
+        for i in xrange(lenS + 1 - minLen):
+            if dp[i]:
+                for j in xrange(minLen, maxLen + 1):
+                    if i + j > lenS: break
+                    if s[i: i + j] in wordDict: dp[i + j] = True
+        return dp[lenS]
