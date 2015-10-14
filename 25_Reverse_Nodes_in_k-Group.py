@@ -1,25 +1,32 @@
-# 2015-06-07   Runtime: 96 ms
-# thanks to https://leetcode.com/discuss/21301/short-but-recursive-java-code-with-comments
+# 2015-10-13   Runtime: 68 ms
 
 # Definition for singly-linked list.
-# class ListNode:
+# class ListNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
 
-class Solution:
-    # @param {ListNode} head
-    # @param {integer} k
-    # @return {ListNode}
+class Solution(object):
     def reverseKGroup(self, head, k):
-        p, count = head, 0
-        while p and count < k: p, count = p.next, count + 1
-        if count < k: return head
-        curr = self.reverseKGroup(p, k)
-        # reverse current k nodes
-        for i in xrange(k):
-            tmp = head.next
-            head.next = curr
-            curr = head
-            head = tmp
-        return curr
+        """
+        :type head: ListNode
+        :type k: int
+        :rtype: ListNode
+        """
+        if not head or k == 1: return head
+        dummyHead = ListNode(0)
+        dummyHead.next = head
+        num, p = 0, head
+        pre, cur, nex = dummyHead, None, None
+        while p:
+            num, p = num + 1, p.next
+        while num >= k:
+            cur, nex = pre.next, pre.next.next
+            for i in xrange(k - 1):
+                cur.next = nex.next
+                nex.next = pre.next
+                pre.next = nex
+                nex = cur.next
+            pre = cur
+            num -= k
+        return dummyHead.next
