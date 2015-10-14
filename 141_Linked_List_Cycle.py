@@ -1,21 +1,18 @@
-# 2015-02-02  Runtime: 184 ms
-
+# 2015-10-13  Runtime: 84 ms
 # Definition for singly-linked list.
-# class ListNode:
+# class ListNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
 
-class Solution:
-    # @param head, a ListNode
-    # @return a boolean
+class Solution(object):
     def hasCycle(self, head):
-        if not head: return False
-        fast, slow = head, head
-        while True:
-            fast = fast.next
-            if not fast: return False
-            fast = fast.next
-            if not fast: return False
-            slow = slow.next
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        slow, fast = head, head
+        while fast and fast.next:
+            slow, fast = slow.next, fast.next.next
             if fast == slow: return True
+        return False
