@@ -1,25 +1,25 @@
-# 2015-01-27 Runtime: 41 ms
+# 2015-10-14 Runtime: 40 ms
 
-# Definition for a  binary tree node
-# class TreeNode:
+# Definition for a binary tree node.
+# class TreeNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.left = None
 #         self.right = None
 
-class Solution:
-    # @param root, a tree node
-    # @return a list of integers
+class Solution(object):
     def preorderTraversal(self, root):
-        if not root: 
-            return []
-        else:
-            res, stack = [], [root]
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        if not root: return []
+        stack, result = [root], []
         while stack:
-            curr = stack.pop()
-            res.append(curr.val)
-            if curr.right:
-                stack.append(curr.right)
-            if curr.left:
-                stack.append(curr.left)
-        return res
+            x = stack.pop()
+            result.append(x.val)
+            if x.right:
+                stack.append(x.right)
+            if x.left:
+                stack.append(x.left)
+        return result
