@@ -1,4 +1,4 @@
-# 2015-05-28  Runtime: 48 ms 
+# 2015-10-21  Runtime: 48 ms 
 class Solution:
     # @param {integer[]} nums
     # @return {integer}
@@ -7,7 +7,7 @@ class Solution:
         L, R = 0, len(nums) - 1
         while L < R and nums[L] > nums[R]:
             M = (L + R) / 2
-            if nums[M] > nums[R]:
+            if nums[M] > nums[R]: # if nums[M] >= nums[L]: also works
                 L = M + 1
             else:
                 R = M
