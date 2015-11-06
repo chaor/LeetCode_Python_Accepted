@@ -1,15 +1,11 @@
-# 2014-01-18  Runtime: 58 ms
-
-class Solution:
-    # @param num, a list of integers
-    # @return a string
-    def largestNumber(self, num):
-        num = [str(i) for i in num]
-        # what's this lambda function? for input string x, y
-        # if x + y > y + x, return -1
-        # if x + y < y + x, return 1
-        # if x + y == y + x, return 0
-        num.sort(cmp = lambda x, y: (x + y < y + x) - (x + y > y + x))
-        # Boolean operators and and or are so-called short-circuit operators
-        # return value of a short-circuit operator is the last evaluated argument
-        return ''.join(num).lstrip('0') or '0'
+# 2015-11-05  Runtime: 52 ms
+class Solution(object):
+    def largestNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: str
+        """
+        nums = [str(x) for x in nums]
+        # lambda function return a negative number: x < y, 0: x == y, 1: x > y
+        nums.sort(cmp = lambda x, y: (x + y < y + x) - (x + y > y + x))
+        return ''.join(nums).lstrip('0') or '0'
