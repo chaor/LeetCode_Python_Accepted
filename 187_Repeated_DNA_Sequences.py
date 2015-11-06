@@ -1,17 +1,16 @@
-# 2015-02-06  Runtime: 141 ms
-
-class Solution:
-    # @param s, a string
-    # @return a list of strings
+# 2015-11-06  Runtime: 108 ms
+class Solution(object):
     def findRepeatedDnaSequences(self, s):
-        lenS = len(s)
-        if lenS < 11: 
-            return []
-        sequenceSet, resultSet, tupleS = set(), set(), tuple(s)
-        for i in xrange(lenS - 9):
-            slidingWindow = tupleS[i:i+10]
-            if slidingWindow in sequenceSet:
-                resultSet.add(''.join(slidingWindow))
+        """
+        :type s: str
+        :rtype: List[str]
+        """
+        if len(s) < 10: return []
+        tmpSet, resultSet, res = set([]), set([]), []
+        for i in range(len(s) - 9):
+            DNA = s[i: i + 10]
+            if DNA in tmpSet:
+                resultSet.add(DNA)
             else:
-                sequenceSet.add(slidingWindow)
+                tmpSet.add(DNA)
         return list(resultSet)
