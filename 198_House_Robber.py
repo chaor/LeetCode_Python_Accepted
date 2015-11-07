@@ -1,13 +1,14 @@
-# 2013-03-31  Runtime: 65 ms
-
-class Solution:
-    # @param num, a list of integer
-    # @return an integer
-    def rob(self, num):
-        if not num: 
-            return 0
-        dp = [0 for i in xrange(len(num) + 1)]
-        dp[0], dp[1] = 0, num[0]
-        for i in xrange(2, len(num) + 1):
-            dp[i] = max(dp[i-1], dp[i-2] + num[i-1])
-        return dp[len(num)]
+# 2015-11-06  Runtime: 40 ms
+class Solution(object):
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        N = len(nums)
+        if N == 0: return 0
+        if N == 1: return nums[0]
+        dp = [nums[0], max(nums[0], nums[1])] + [0] * (N - 2)
+        for i in range(2, N):
+            dp[i] = max(dp[i - 1], nums[i] + dp[i - 2])
+        return dp[N - 1]
