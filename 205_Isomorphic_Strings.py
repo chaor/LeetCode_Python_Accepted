@@ -1,14 +1,16 @@
-# 2015-04-29 Runtime: 52 ms
-
-class Solution:
-    # @param {string} s
-    # @param {string} t
-    # @return {boolean}
+# 2015-11-07  Runtime: 68 ms
+class Solution(object):
     def isIsomorphic(self, s, t):
-        mapping = {}
-        for i in xrange(len(s)):
-            if s[i] not in mapping:
-                mapping[s[i]] = t[i]
-            else:
-                if mapping[s[i]] != t[i]: return False
-        return len(mapping.keys()) == len(set(mapping.values()))
+        """
+        :type s: str
+        :type t: str
+        :rtype: bool
+        """
+        m1, m2 = [0] * 128, [0] * 128
+        for i in range(len(s)):
+            si, ti = ord(s[i]), ord(t[i])
+            if m1[si] != m2[ti]:
+                return False
+            m1[si] = i + 1
+            m2[ti] = i + 1
+        return True
