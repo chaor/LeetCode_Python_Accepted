@@ -1,22 +1,25 @@
-# 2015-04-03  Runtime: 81 ms  BFS
-
-# Definition for a  binary tree node
-# class TreeNode:
+# 2015-11-06  Runtime: 48 ms
+# Definition for a binary tree node.
+# class TreeNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.left = None
 #         self.right = None
 
-class Solution:
-    # @param root, a tree node
-    # @return a list of integers
+class Solution(object):
     def rightSideView(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
         if not root: return []
-        D = {} # key is level num, value is current most right one in this level
-        Q = collections.deque([(root, 1)]) # tuple (node, level)
+        Q, res = collections.deque([root]), []
         while Q:
-            curr = Q.popleft()
-            D[curr[1]] = curr[0].val
-            if curr[0].left: Q.append((curr[0].left, curr[1] + 1))
-            if curr[0].right: Q.append((curr[0].right, curr[1] + 1))
-        return [D[key] for key in sorted(D.keys())]
+            res.append(Q[-1].val)
+            for i in range(len(Q)):
+                x = Q.popleft()
+                if x.left:
+                    Q.append(x.left)
+                if x.right:
+                    Q.append(x.right)
+        return res
