@@ -1,37 +1,46 @@
-# 2015-06-27  Runtime: 500 ms
-# thanks to https://leetcode.com/discuss/36259/tree-solutions-18-20-lines
-class WordDictionary:
-    # initialize your data structure here.
+# 2015-11-07  Runtime: 640 ms
+class WordDictionary(object):
+    class TrieNode(object):
+        def __init__(self):
+            self.d = collections.defaultdict(WordDictionary.TrieNode)
+            self.isWord = False
+
     def __init__(self):
-        self.root = {}
+        """
+        initialize your data structure here.
+        """
+        self.root = self.TrieNode()
 
-    # @param {string} word
-    # @return {void}
-    # Adds a word into the data structure.
     def addWord(self, word):
-        current = self.root
-        for char in word:
-            current = current.setdefault(char, {})
-        current['$'] = '$'  # this is the end flag
+        """
+        Adds a word into the data structure.
+        :type word: str
+        :rtype: void
+        """
+        cur = self.root
+        for ch in word:
+            cur = cur.d[ch]
+        cur.isWord = True
 
-    # @param {string} word
-    # @return {boolean}
-    # Returns if the word is in the data structure. A word could
-    # contain the dot character '.' to represent any one letter.
     def search(self, word):
-        dicts = [self.root]
-        for char in word:
-            newDicts = []
-            if char == '.':
-                for d in dicts:
-                    for key in d.keys():
-                        if key != '$': newDicts.append(d[key])
-                dicts = newDicts
-                continue
-            for d in dicts:
-                if char in d: newDicts.append(d[char])
-            dicts = newDicts
-        return any(['$' in d for d in dicts])
+        """
+        Returns if the word is in the data structure. A word could
+        contain the dot character '.' to represent any one letter.
+        :type word: str
+        :rtype: bool
+        """
+        Q, N = collections.deque([(self.root, 0)]), len(word)
+        while Q:
+            node, i = Q.popleft()
+            if i == N:
+                if node.isWord:
+                    return True
+            elif word[i] == '.':
+                for key in node.d:
+                    Q.append((node.d[key], i + 1))
+            elif word[i] in node.d:
+                Q.append((node.d[word[i]], i + 1))
+        return False
 
 # Your WordDictionary object will be instantiated and called as such:
 # wordDictionary = WordDictionary()
