@@ -1,4 +1,4 @@
-# 2015-08-23  Runtime: 52 ms
+# 2015-11-07  Runtime: 48 ms
 class Solution(object):
     def minSubArrayLen(self, s, nums):
         """
@@ -6,11 +6,11 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
-        Sum, L, minLen = 0, 0, 10 ** 10 # infinity
-        for R in xrange(len(nums)):
+        Sum, L, minLen = 0, 0, sys.maxint
+        for R in range(len(nums)):
             Sum += nums[R]
             while Sum >= s:
-                if R - L + 1 < minLen: minLen = R - L + 1
+                minLen = min(minLen, R - L + 1)
                 Sum -= nums[L]
                 L += 1
-        return minLen if minLen != 10 ** 10 else 0
+        return minLen if minLen != sys.maxint else 0
