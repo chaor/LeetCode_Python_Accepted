@@ -8,8 +8,7 @@ class Solution(object):
         def rob(L, R):
             include, exclude = 0, 0
             for k in range(L, R + 1):
-                i, e = include, exclude
-                include, exclude = nums[k] + e, max(i, e)
+                include, exclude = nums[k] + exclude, max(include, exclude)
             return max(include, exclude)
 
         if len(nums) == 1: return nums[0]
