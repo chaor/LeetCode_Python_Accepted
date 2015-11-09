@@ -1,16 +1,20 @@
-# 2015-06-04  Runtime: 80 ms
-class Solution:
-    # @param {integer} n
-    # @param {integer} k
-    # @return {integer[][]}
+# 2015-11-08  Runtime: 68 ms
+class Solution(object):
     def combine(self, n, k):
-        self.result, self.n, self.numbers = [], n, [i + 1 for i in xrange(n)]
-        self.dfs([], 0, k)
-        return self.result
-        
-    def dfs(self, L, start, k):
-        if k == 0:
-            self.result.append(L)
-            return
-        for i in xrange(start, self.n):
-            self.dfs(L + [self.numbers[i]], i + 1, k - 1)
+        """
+        :type n: int
+        :type k: int
+        :rtype: List[List[int]]
+        """
+        def dfs(L, k, oneAnswer):
+            if k == 0:
+                result.append(oneAnswer)
+                return
+            if len(L) < k:
+                return
+            for i in range(len(L)):
+                dfs(L[i + 1:], k - 1, oneAnswer + [L[i]])
+
+        result = []
+        dfs(range(1, n + 1), k, [])
+        return result
