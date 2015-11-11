@@ -1,21 +1,19 @@
-# 2015-07-09  Runtime: 124 ms
-class Solution:
-    # @param {character[][]} matrix
-    # @return {integer}
+# 2015-11-10  Runtime: 128 ms
+class Solution(object):
     def maximalSquare(self, matrix):
-        # thanks to https://leetcode.com/discuss/38614/my-c-code-8ms-dp-o-n-2-time-o-n-space
-        if not matrix or not matrix[0]: return 0
+        """
+        :type matrix: List[List[str]]
+        :rtype: int
+        """
+        if not matrix: return 0
         M, N = len(matrix), len(matrix[0])
-        # dp[i][j] is max side length of square whose bottom-right corner is matrix[currRow][j-1]
-        dp = [[0 for i in xrange(N + 1)], [0 for i in xrange(N + 1)]]
-        maxLen = 0
-
-        for row in xrange(M):
-            currRow, prevRow = row % 2, 1 - row % 2
-            for col in xrange(1, N + 1):
-                if matrix[row][col - 1] == '1':
-                    dp[currRow][col] = 1 + min(dp[prevRow][col - 1], dp[currRow][col - 1], dp[prevRow][col])
-                    maxLen = max(maxLen, dp[currRow][col])
-                else:
-                    dp[currRow][col] = 0
-        return maxLen * maxLen
+        dp = [[0] * N for i in range(M)] # used to record side length of largest square
+        maxSideLength = 0 
+        for i in range(M):
+            for j in range(N):
+                if matrix[i][j] == '1':
+                    dp[i][j] = 1
+                    if i > 0 and j > 0:
+                        dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1
+                    maxSideLength = max(maxSideLength, dp[i][j])
+        return maxSideLength ** 2
