@@ -1,17 +1,19 @@
-# 2015-06-23  Runtime: 124 ms
-class Solution:
-    # @param {integer[]} nums
-    # @param {integer} k
-    # @param {integer} t
-    # @return {boolean}
+# 2015-11-10  Runtime: 56 ms
+class Solution(object):
     def containsNearbyAlmostDuplicate(self, nums, k, t):
-        # thanks to https://leetcode.com/discuss/38176/python-ordereddict
-        if k <= 0 or t < 0: return False
-        d = collections.OrderedDict()
-        for number in nums:
-            key = number if t == 0 else number // t
-            for value in (d.get(key - 1), d.get(key), d.get(key + 1)):
-                if value is not None and abs(value - number) <= t: return True
-            if len(d) == k: d.popitem(last = False) # pop from head
-            d[key] = number
+        """
+        :type nums: List[int]
+        :type k: int
+        :type t: int
+        :rtype: bool
+        """
+        bucket = {} # key is bucketnumber, value is nums[i]
+        for i, v in enumerate(nums):
+            bucketNum, offset = (v / t, 1) if t else (v, 0)
+            for idx in range(bucketNum - offset, bucketNum + offset + 1):
+                if idx in bucket and abs(bucket[idx] - v) <= t:
+                    return True
+            bucket[bucketNum] = v
+            if len(bucket) > k:
+                del bucket[nums[i - k] / t if t else nums[i - k]]
         return False
