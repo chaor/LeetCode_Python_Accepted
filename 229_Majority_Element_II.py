@@ -1,24 +1,26 @@
-# 2015-06-29   Runtime: 72 ms
-class Solution:
-    # @param {integer[]} nums
-    # @return {integer[]}
+# 2015-11-10   Runtime: 52 ms
+# Boyer-Moore Majority Vote algorithm, http://www.cs.utexas.edu/~moore/best-ideas/mjrty/
+class Solution(object):
     def majorityElement(self, nums):
-        # thanks to https://leetcode.com/discuss/42806/boyer-moore-majority-vote-algorithm-generalization
-        # there're at most 2 elements that appear more than ⌊ n/3 ⌋ times
-        # m,n is the two most frequently appeared numbers
-        m, n, mCount, nCount = 0, 1, 0, 0
-        for i in nums:
-            if i == m: mCount += 1
-            elif i == n: nCount += 1
-            elif mCount == 0: m, mCount = i, 1
-            elif nCount == 0: n, nCount = i, 1
-            else: mCount, nCount = mCount - 1, nCount - 1
-            
-        mCount, nCount = 0, 0
-        for i in nums:
-            if i == m: mCount += 1
-            elif i == n: nCount += 1
-        result = []
-        if mCount > len(nums) / 3: result.append(m)
-        if nCount > len(nums) / 3: result.append(n)
-        return result
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        countA, countB, A, B = 0, 0, 5, 15 # initialize A, B to random values
+        for x in nums:
+            if x == A:
+                countA += 1
+            elif x == B:
+                countB += 1
+            elif countA == 0:
+                A, countA = x, 1
+            elif countB == 0:
+                B, countB = x, 1
+            else:
+                countA, countB = countA - 1, countB - 1
+        res = []
+        if nums.count(A) > len(nums) // 3:
+            res.append(A)
+        if nums.count(B) > len(nums) // 3:
+            res.append(B)
+        return res
