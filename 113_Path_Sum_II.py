@@ -1,29 +1,28 @@
-# 2015-03-23  Runtime: 118 ms
-
-# Definition for a  binary tree node
-# class TreeNode:
+# 2015-11-11  Runtime: 88 ms
+# Definition for a binary tree node.
+# class TreeNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.left = None
 #         self.right = None
 
-class Solution:
-    # @param root, a tree node
-    # @param sum, an integer
-    # @return a list of lists of integers
+class Solution(object):
     def pathSum(self, root, sum):
-        if not root:
-            return []
-        self.res = []
-        self.dfs(root, sum, [])
-        return self.res
-        
-    def dfs(self, node, sum, path):
-        if not (node.left or node.right):
-            if node.val == sum:
-                self.res.append(path + [node.val])
-            return
-        if node.left:
-            self.dfs(node.left, sum - node.val, path + [node.val])
-        if node.right:
-            self.dfs(node.right, sum - node.val, path + [node.val])
+        """
+        :type root: TreeNode
+        :type sum: int
+        :rtype: List[List[int]]
+        """
+        def dfs(node, Sum, oneAnswer):
+            if not node:
+                return
+            if not node.left and not node.right:
+                if Sum == node.val:
+                    result.append(oneAnswer + [node.val])
+                return
+            dfs(node.left, Sum - node.val, oneAnswer + [node.val])
+            dfs(node.right, Sum - node.val, oneAnswer + [node.val])    
+                        
+        result = []
+        dfs(root, sum, [])
+        return result
