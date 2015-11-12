@@ -1,24 +1,30 @@
-# 2015-06-20  Runtime: 412 ms
-class Solution:
-    # @param {character[][]} board
-    # @param {string} word
-    # @return {boolean}
+# 2015-11-11  Runtime: 364 ms
+class Solution(object):
     def exist(self, board, word):
-        self.b, self.w, self.m, self.n, self.wLen = board, word, len(board), len(board[0]), len(word)
-        for i in xrange(self.m):
-            for j in xrange(self.n):
-                if self.isFound(0, i, j):
+        """
+        :type board: List[List[str]]
+        :type word: str
+        :rtype: bool
+        """
+        def dfs(i, j, k):
+            if k >= wordLen:
+                return True
+            if i < 0 or i > M - 1 or j < 0 or j > N - 1:
+                return False
+            result = False
+            if word[k] == board[i][j]:
+                board[i][j] = '.'
+                if dfs(i - 1, j, k + 1) or dfs(i + 1, j, k + 1) or \
+                    dfs(i, j - 1, k + 1) or dfs(i, j + 1, k + 1):
+                    result = True
+                board[i][j] = word[k] 
+            return result
+        
+        if not board: return False
+        if not word: return True
+        M, N, wordLen = len(board), len(board[0]), len(word)
+        for i in range(M):
+            for j in range(N):
+                if dfs(i, j, 0):
                     return True
-        return False
-
-    def isFound(self, k, x, y):
-        if x < 0 or y < 0 or x >= self.m or y >= self.n or self.b[x][y] == '.' or self.b[x][y] != self.w[k]:
-            return False
-        if k == self.wLen - 1:
-            return True
-        tmp, self.b[x][y] = self.b[x][y], '.'
-        if self.isFound(k + 1, x - 1, y) or self.isFound(k + 1, x + 1, y) or \
-                self.isFound(k + 1, x, y - 1) or self.isFound(k + 1, x, y + 1):
-            return True
-        self.b[x][y] = tmp
         return False
