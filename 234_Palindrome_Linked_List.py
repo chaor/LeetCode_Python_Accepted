@@ -1,27 +1,34 @@
-# 2015-07-10  Runtime: 208 ms
-
+# 2015-11-14  Runtime: 21 tests, 144 ms
 # Definition for singly-linked list.
-# class ListNode:
+# class ListNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
 
-class Solution:
-    # @param {ListNode} head
-    # @return {boolean}
+class Solution(object):
     def isPalindrome(self, head):
-    	# thanks to https://leetcode.com/discuss/44751/11-lines-12-with-restore-o-n-time-o-1-space
-        rev, fast = None, head
-        # reverse the first half of the list, rev is the first node
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        if not head or not head:
+            return True
+        slow, fast = head, head.next
         while fast and fast.next:
-            fast = fast.next.next
-            rev, rev.next, head = head, rev, head.next
-        # if total nodes N is even, fast will be None. If N is odd, fast will be the last node    
-        tail = head.next if fast else head
-        isPalin = True
-        # update isPalin, recover the first half of the list
-        while rev:
-            isPalin = isPalin and rev.val == tail.val
-            head, head.next, rev = rev, head, rev.next
-            tail = tail.next
-        return isPalin
+            slow, fast = slow.next, fast.next.next
+        slow.next = self.reverseLinkedList(slow.next)
+        slow = slow.next
+        while slow:
+            if head.val != slow.val:
+                return False
+            head, slow = head.next, slow.next
+        return True
+        
+    def reverseLinkedList(self, h):
+        pre, next = None, None
+        while h:
+            next = h.next
+            h.next = pre
+            pre = h
+            h = next
+        return pre
