@@ -1,4 +1,4 @@
-# 2015-05-14  Runtime: 284 ms
+# 2015-11-16  Runtime: 124 ms
 
 # Definition for singly-linked list with a random pointer.
 # class RandomListNode:
@@ -14,27 +14,26 @@ class Solution:
         # put the copy of each node behind them, so that node.next.random = node.random.next
         # N1 -> N1' -> N2 -> N2' -> N3 -> N3' -> ...
         
-        # put the copy of each node behind them
-        p = head
-        while p:
-            next = p.next
-            copy = RandomListNode(p.label)
-            p.next = copy
-            copy.next = next
-            p = next
+        if not head: return None
+        # put each node's copy behind it
+        curr = head
+        while curr:
+            copy = RandomListNode(curr.label)
+            copy.next = curr.next
+            curr.next = copy
+            curr = copy.next
+            
+        # set self.random for each node's copy
+        curr = head
+        while curr:
+            if curr.random:
+                curr.next.random = curr.random.next
+            curr = curr.next.next
         
-        # set the Node.random for the copy
-        p = head
-        while p:
-            p.next.random = p.random.next if p.random else None
-            p = p.next.next
-        
-        # seperate this copy
-        p = head
-        headCopy = p.next if p else None
-        while p:
-            copy = p.next
-            p.next = copy.next
-            p = p.next
-            copy.next = p.next if p else None
-        return headCopy
+        # extract each node's copy to form a new linkedlist        
+        headcopy, curr1, curr2 = head.next, head, head.next
+        while curr2.next:
+            curr1.next, curr2.next = curr1.next.next, curr2.next.next
+            curr1, curr2 = curr1.next, curr2.next
+        curr1.next = None
+        return headcopy
