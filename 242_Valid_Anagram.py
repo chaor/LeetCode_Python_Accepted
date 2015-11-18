@@ -1,14 +1,18 @@
-# 2015-07-31  Runtime: 76 ms
-class Solution:
-    # @param {string} s
-    # @param {string} t
-    # @return {boolean}
+# 2015-11-17  Runtime: 72 ms
+class Solution(object):
     def isAnagram(self, s, t):
-        count = [0 for i in xrange(26)]
-        for c in s:
-            count[ord(c) - ord('a')] += 1
-        for c in t:
-            count[ord(c) - ord('a')] -= 1
-        for num in count:
-            if num: return False
+        """
+        :type s: str
+        :type t: str
+        :rtype: bool
+        """
+        if len(s) != len(t):
+            return False
+        count = [0] * 256
+        for ch in s:
+            count[ord(ch)] += 1
+        for ch in t:
+            if count[ord(ch)] == 0:
+                return False
+            count[ord(ch)] -= 1
         return True
