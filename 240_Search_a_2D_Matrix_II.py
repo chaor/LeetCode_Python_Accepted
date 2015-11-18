@@ -1,15 +1,13 @@
-# 2015-07-22  Runtime: 104 ms
-class Solution:
-    # @param {integer[][]} matrix
-    # @param {integer} target
-    # @return {boolean}
+# 2015-11-17  Runtime: 84 ms
+class Solution(object):
     def searchMatrix(self, matrix, target):
-        # thanks to https://leetcode.com/discuss/47571/4-lines-c-6-lines-ruby-7-lines-python-1-liners
-        # 右上角开始向左向下扫，O(m + n)
-        j = -1
+        """
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
+        j, n = len(matrix[0]) - 1, len(matrix[0])
         for row in matrix:
-            while j + len(row) > 0 and row[j] > target:
-                j -= 1
-            if row[j] == target:
-                return True
+            while j > 0 and row[j] > target: j -= 1
+            if row[j] == target: return True
         return False
