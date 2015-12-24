@@ -7,7 +7,8 @@ class Solution:
         while n >= 2:
             n -= 2
             if n < 2:
-                res = [a + s + b for a, b in ('11', '88', '69', '96') for s in res]
+                # ensure ascending order
+                res = [a + s + b for a, b in ('11', '69', '88', '96') for s in res]
             else:
-                res = [a + s + b for a, b in ('00', '11', '88', '69', '96') for s in res]
+                res = [a + s + b for a, b in ('00', '11', '69', '88', '96') for s in res]
         return res
