@@ -20,3 +20,22 @@ class Solution:
             res.append(poped.val)
             cur = poped.right
         return res
+
+# another solution which is easier to understand
+class Solution(object):
+    def inorderTraversal(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        stack, res = [(root, False)], []
+        while stack:
+            node, visited = stack.pop()
+            if node:
+                if visited:
+                    res.append(node.val)
+                else:
+                    stack.append((node.right, False))
+                    stack.append((node, True))
+                    stack.append((node.left, False))
+        return res
