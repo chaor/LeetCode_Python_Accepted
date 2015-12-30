@@ -1,4 +1,4 @@
-# 2015-12-29  174 tests, 176 ms
+# 2015-12-29  174 tests, 184 ms
 class Solution(object):
     def maxProduct(self, words):
         """
@@ -6,4 +6,4 @@ class Solution(object):
         :rtype: int
         """
         d = {sum(1 << (ord(c) - 97) for c in set(w)): len(w) for w in sorted(words, key=len)}
-        return max([d[k] * d[K] for k, K in itertools.combinations(d.keys(), 2) if not K & k] or [0])
+        return max([d[k] * d[K] for k, K in itertools.combinations(d, 2) if not K & k] or [0])
