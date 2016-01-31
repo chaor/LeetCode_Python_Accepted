@@ -1,14 +1,13 @@
-# 2015-05-20  Runtime: 112 ms
-class Solution:
-    # @param {integer} num
-    # @return {string}
+# 2016-01-31  Runtime: 116 ms
+class Solution(object):
     def intToRoman(self, num):
-        value = [1000, 900, 500, 400, 100, 90, 50,  40,  10,  9,   5,  4,  1]
-        symbol = ['M', 'CM','D', 'CD','C', 'XC','L','XL','X','IX','V','IV','I']
-        roman, i = [], 0
-        while num:
-            for k in xrange(num / value[i]):
-                roman.append(symbol[i])
-                num -= value[i]
-            i += 1
-        return ''.join(roman)
+        """
+        :type num: int
+        :rtype: str
+        """
+        result = ''
+        for value, roman in [(1000, 'M'), (900, 'CM'), (500, 'D'), (400, 'CD'), (100, 'C'),
+            (90, 'XC'), (50, 'L'), (40, 'XL'), (10, 'X'), (9, 'IX'), (5, 'V'), (4, 'IV'), (1, 'I')]:
+                count = num / value
+                if count: result, num = result + roman * count, num - count * value
+                if not num: return result
