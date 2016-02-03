@@ -1,30 +1,29 @@
-# 2015-05-16  Runtime: 214 ms
-
-class Solution:
-    # @param {integer[]} nums
-    # @param {integer} target
-    # @return {integer}
+# 2016-02-02  Runtime: 116 ms
+class Solution(object):
     def threeSumClosest(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
         nums.sort()
-        closestSum, diff = None, 10**10  # diff init is infinite
-        for i in xrange(len(nums)):
-            start, end = 0, len(nums) - 1
-            while start < end:
-                # make sure i != start, i != end, start != end
-                if start == i: start += 1
-                if end == i: end -= 1
-                if start >= end: continue
-                Sum = nums[i] + nums[start] + nums[end]
+        i, N, diff, closestSum = 0, len(nums), float('inf'), None
+        while i < N - 2:
+            j, k = i + 1, N - 1
+            while j < k:
+                Sum = nums[i] + nums[j] + nums[k]
                 if Sum == target:
                     return target
                 elif Sum < target:
                     if target - Sum < diff:
-                        diff = target - Sum
-                        closestSum = Sum
-                    start += 1
+                        diff, closestSum = target - Sum, Sum
+                    while j < k and nums[j] == nums[j + 1]: j += 1
+                    j += 1
                 else:
                     if Sum - target < diff:
-                        diff = Sum - target
-                        closestSum = Sum
-                    end -= 1
+                        diff, closestSum = Sum - target, Sum
+                    while j < k and nums[k] == nums[k - 1]: k -= 1
+                    k -= 1
+            while i < N - 2 and nums[i] == nums[i + 1]: i += 1
+            i += 1
         return closestSum
