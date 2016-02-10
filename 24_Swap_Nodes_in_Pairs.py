@@ -1,23 +1,20 @@
-# 2015-05-11  Runtime: 57 ms
-
+# 2016-02-09  55 tests, 40 ms
 # Definition for singly-linked list.
-# class ListNode:
+# class ListNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
 
-class Solution:
-    # @param {ListNode} head
-    # @return {ListNode}
+class Solution(object):
     def swapPairs(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
         dummyHead = ListNode(0)
-        dummyHead.next, p, prev = head, head, dummyHead
-        while p and p.next:
-            # change p -> q -> r ... to q -> p -> r ...
-            q, r = p.next, p.next.next
-            prev.next = q
-            q.next = p
-            p.next = r
-            prev = p
-            p = r
+        p, dummyHead.next = dummyHead, head
+        while p and p.next and p.next.next:
+            p1, p2, p3 = p.next, p.next.next, p.next.next.next
+            p.next, p1.next, p2.next = p2, p3, p1
+            p = p1
         return dummyHead.next
