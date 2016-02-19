@@ -1,16 +1,17 @@
-# 2015-05-06  Runtime: 139 ms
-
-class Solution:
-    # @param {string} haystack
-    # @param {string} needle
-    # @return {integer}
+# 2016-02-19  Runtime: 60 ms
+class Solution(object):
     def strStr(self, haystack, needle):
-        haystackPtr = 0
-        while True: # traverse haystack
+        """
+        :type haystack: str
+        :type needle: str
+        :rtype: int
+        """
+        haystackPtr, haystackLen, needleLen = 0, len(haystack), len(needle)
+        while True:
             needlePtr = 0
-            while True: # traverse needle
-                if needlePtr == len(needle): return haystackPtr
-                if haystackPtr + needlePtr == len(haystack): return -1
+            while True:
+                if needlePtr == needleLen: return haystackPtr
+                if haystackPtr + needlePtr == haystackLen: return -1
                 if needle[needlePtr] != haystack[haystackPtr + needlePtr]: break
                 needlePtr += 1
             haystackPtr += 1
