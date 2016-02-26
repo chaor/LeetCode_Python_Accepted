@@ -1,4 +1,5 @@
 # 2016-02-26  26 tests, 40 ms
+# thanks to https://leetcode.com/discuss/88153/another-python, brilliant solution!
 class Solution(object):
     def isSelfCrossing(self, x):
         """
