@@ -1,13 +1,15 @@
-# 2015-06-13  Runtime: 56 ms
-class Solution:
-    # @param {integer[]} nums
-    # @return {integer}
-    def firstMissingPositive(self, nums):
-        # put the number into the right place, e.g. 5 should be put in nums[4], 1 should be put in nums[0]
-        for i in xrange(len(nums)):
-            while 0 < nums[i] <= len(nums) and nums[i] != nums[nums[i] - 1]:
-                j = nums[i] - 1
-                nums[i], nums[j] = nums[j], nums[i]
-        for i in xrange(len(nums)):
-            if nums[i] != i + 1: return i + 1
-        return len(nums) + 1
+# 2016-03-06  156 tests, 48 ms
+class Solution(object):
+    def firstMissingPositive(self, A):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        n = len(A)
+        for i in xrange(n):
+            while 1 <= A[i] <= n and A[A[i] - 1] != A[i]:
+                ind = A[i] - 1
+                A[i], A[ind] = A[ind], A[i]
+        for i, x in enumerate(A):
+            if x != i + 1: return i + 1
+        return n + 1
