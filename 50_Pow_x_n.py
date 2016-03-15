@@ -1,15 +1,15 @@
-# 2015-09-07  Runtime: 60 ms
-class Solution:
-    # @param {float} x
-    # @param {integer} n
-    # @return {float}
+# 2016-03-15  300 tests, 40 ms
+class Solution(object):
     def myPow(self, x, n):
-        # thanks to https://leetcode.com/discuss/9459/o-logn-solution-in-java
-        if n < 0:
-            x, n = 1.0 / x, -n
-        res, f = 1, x
-        while n > 0:
-            if n % 2: res *= f
-            f = f * f
+        """
+        :type x: float
+        :type n: int
+        :rtype: float
+        """
+        if n < 0: x, n = 1.0 / x, -n
+        result, weight = 1, x
+        while n: # consider binary
+            if n & 1: result *= weight
+            weight **= 2 # square
             n >>= 1
-        return res
+        return result
