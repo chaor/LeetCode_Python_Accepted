@@ -1,14 +1,12 @@
-# 2015-08-15  Runtime: 232 ms
-class Solution:
-    # @param {string[]} strs
-    # @return {string[][]}
+# 2016-08-15  100 tests, 256 ms
+class Solution(object):
     def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
         d = {}
-        for word in strs:
-            t = tuple(sorted(word))
-            if t in d:
-                d[t].append(word)
-            else:
-                d[t] = [word]
-        for key in d: d[key].sort()
+        for w in sorted(strs):
+            key = tuple(sorted(w))
+            d[key] = d.get(key, []) + [w]
         return d.values()
