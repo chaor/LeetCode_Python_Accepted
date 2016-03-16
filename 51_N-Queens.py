@@ -1,4 +1,4 @@
-# 2016-03-16  Runtime: 136 ms
+# 2016-03-16, 9 tests, 136 ms
 class Solution(object):
     def solveNQueens(self, n):
         """
