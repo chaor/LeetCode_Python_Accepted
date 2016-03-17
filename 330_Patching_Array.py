@@ -1,4 +1,4 @@
-# 2015-01-26  149 tests, 48 ms
+# 2016-03-16, 149 tests, 44 ms
 class Solution(object):
     def minPatches(self, nums, n):
         """
@@ -6,12 +6,10 @@ class Solution(object):
         :type n: int
         :rtype: int
         """
-        i, patchCount, maxReach, numLength = 0, 0, 1, len(nums)
-        while maxReach <= n:
-            if i < numLength and nums[i] <= maxReach:
-                maxReach += nums[i]
-                i += 1
-            else:
-                maxReach <<= 1
-                patchCount += 1 # add maxReach into nums
-        return patchCount
+        patch_count, max_reach = 0, 0 # we can form any number in [1, max_reach]
+        for x in nums + [float('inf')]:
+            while max_reach + 1 < x and max_reach < n:
+                # the patch we add is max_reach + 1
+                patch_count, max_reach = patch_count + 1, max_reach + max_reach + 1
+            if max_reach >= n: return patch_count
+            max_reach += x
