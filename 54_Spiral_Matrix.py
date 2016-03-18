@@ -1,14 +1,23 @@
-# 2015-08-30  Runtime: 44 ms
-class Solution:
-    # @param {integer[][]} matrix
-    # @return {integer[]}
+# 2016-03-18  22 tests, 44 ms
+class Solution(object):
     def spiralOrder(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: List[int]
+        """
         if not matrix: return []
-        i, j, di, dj, M, N, res = 0, 0, 0, 1, len(matrix), len(matrix[0]), []
+        rows, cols, result = len(matrix), len(matrix[0]), []
+        N, x, y, dx, dy = rows * cols, -1, 0, 1, 0
         while True:
-            res.append(matrix[i][j])
-            if len(res) == M * N: return res
-            matrix[i][j] = None
-            if matrix[(i + di) % M][(j + dj) % N] is None:
-                di, dj = dj, -di # turn right
-            i, j = i + di, j + dj
+            for i in xrange(cols):
+                x, y = x + dx, y + dy
+                result += matrix[y][x],
+            rows -= 1
+            if not rows: return result
+            dx, dy = -dy, dx
+            for i in xrange(rows):
+                x, y = x + dx, y + dy
+                result += matrix[y][x],
+            cols -= 1
+            if not cols: return result
+            dx, dy = -dy, dx
