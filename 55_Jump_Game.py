@@ -1,10 +1,12 @@
-# 2015-08-16  Runtime: 80 ms
-class Solution:
-    # @param {integer[]} nums
-    # @return {boolean}
+# 2016-03-18   72 tests, 52 ms
+class Solution(object):
     def canJump(self, nums):
-        maxReach = 0
-        for i in xrange(len(nums)):
-            if i > maxReach: return False
-            if i + nums[i] > maxReach: maxReach = i + nums[i]
-        return True
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        max_reach, n = 0, len(nums)
+        for i, x in enumerate(nums):
+            if max_reach < i: return False
+            if max_reach >= n - 1: return True
+            max_reach = max(max_reach, i + x)
