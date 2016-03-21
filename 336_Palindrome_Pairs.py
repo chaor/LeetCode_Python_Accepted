@@ -1,4 +1,4 @@
-# 2016-03-20  134 tests, 608 ms
+# 2016-03-20   134 tests, 608 ms
 class Solution(object):
     def palindromePairs(self, words):
         """
