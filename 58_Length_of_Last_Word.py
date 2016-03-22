@@ -1,14 +1,15 @@
-# 2015-06-18   Runtime: 52 ms
-class Solution:
-    # @param {string} s
-    # @return {integer}
+# 2016-03-22   59 tests, 40 ms
+class Solution(object):
     def lengthOfLastWord(self, s):
-        i, L = 0, 0
-        while i < len(s):
-            if s[i] != ' ':
-                L += 1
-                i += 1
+        """
+        :type s: str
+        :rtype: int
+        """
+        letter_found, letter_start = False, -1
+        for i, ch in enumerate(reversed(s)):
+            if ch != ' ':
+                if not letter_found: letter_start = i
+                letter_found = True
             else:
-                i += 1
-                if i < len(s) and s[i] != ' ': L = 0
-        return L
+                if letter_found: return i - letter_start
+        return len(s) - letter_start if letter_found else 0
