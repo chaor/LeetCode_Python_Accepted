@@ -19,3 +19,16 @@ class Solution:
             while i < n and '0' <= s[i] <= '9': i += 1
         while i < n and s[i] == ' ': i += 1
         return isNumeric and i == n
+
+# 2016-03-27 EAFP solution (Easier ask for forgiveness than permission), 1481 tests, 84 ms
+class Solution(object):
+    def isNumber(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        try:
+            float(s)
+            return True
+        except:
+            return False
