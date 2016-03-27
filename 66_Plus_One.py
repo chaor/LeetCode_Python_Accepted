@@ -1,13 +1,14 @@
-# 2015-05-11  Runtime: 63 ms
-class Solution:
-    # @param {integer[]} digits
-    # @return {integer[]}
+# 2016-03-27  108 tests, 40 ms
+class Solution(object):
     def plusOne(self, digits):
-        for i in reversed(xrange(len(digits))):
-            if digits[i] < 9:
-                digits[i] += 1
+        """
+        :type digits: List[int]
+        :rtype: List[int]
+        """
+        for i, d in enumerate(reversed(digits), start = 1):
+            if d < 9:
+                digits[-i] += 1
                 return digits
             else:
-                digits[i] = 0
-        digits.insert(0, 1)
-        return digits
+                digits[-i] = 0
+        return [1] + digits
