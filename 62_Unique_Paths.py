@@ -1,4 +1,4 @@
-# 2015-08-31  Runtime: 56 ms
+# 2016-03-26  61 tests, 44 ms
 class Solution(object):
     def uniquePaths(self, m, n):
         """
@@ -6,9 +6,5 @@ class Solution(object):
         :type n: int
         :rtype: int
         """
-        # C(m-1+n-1)(m-1)
-        if m > n: m, n = n, m
-        res = 1
-        for i in xrange(1, m):
-            res = res * (m + n - 1 - i) / i
-        return res
+        m, n = m - 1, n - 1
+        return math.factorial(m + n) / math.factorial(m) / math.factorial(n)
