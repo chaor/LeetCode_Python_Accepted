@@ -1,29 +1,24 @@
-# 2015-06-18  Runtime: 72 ms
+# 2016-03-26   230 tests, 64 ms
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
 
-class Solution:
-    # @param {ListNode} head
-    # @param {integer} k
-    # @return {ListNode}
+class Solution(object):
     def rotateRight(self, head, k):
-        if not head or not head.next: return head
-        dummy = ListNode(0)
-        dummy.next = head
-        fast, slow = dummy, dummy
-        
-        # get total length
-        L = 0
-        while fast.next: fast, L = fast.next, L + 1
-        
-        # get L - k % L th node
-        for i in xrange(L - k % L): slow = slow.next
-        
-        # rotate
-        fast.next = dummy.next
-        dummy.next = slow.next
-        slow.next = None
-        return dummy.next
+        """
+        :type head: ListNode
+        :type k: int
+        :rtype: ListNode
+        """
+        if not head: return None
+        n, p1, p2 = 0, head, head
+        # p1 goes to the last node
+        while p1.next: n, p1 = n + 1, p1.next
+        if k % (n + 1) == 0: return head
+        # p2 goes to the k place
+        for i in xrange(n - k % (n + 1)): p2 = p2.next
+        # find new head
+        new_head, p2.next, p1.next = p2.next, None, head
+        return new_head
