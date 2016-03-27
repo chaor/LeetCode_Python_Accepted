@@ -1,14 +1,18 @@
-# 2015-08-31  Runtime: 76 ms
+# 2016-03-26  61 tests, 76 ms
 class Solution(object):
     def minPathSum(self, grid):
         """
         :type grid: List[List[int]]
         :rtype: int
         """
-        M, N = len(grid), len(grid[0])
-        Sum = [[10 ** 10] * (N + 1) for i in xrange(M + 1)] # initialize to infinity
-        Sum[M - 1][N] = 0
-        for i in reversed(xrange(M)):
-            for j in reversed(xrange(N)):
-                Sum[i][j] = grid[i][j] + min(Sum[i + 1][j], Sum[i][j + 1])
-        return Sum[0][0]
+        m, n = len(grid), len(grid[0])
+        # initialization 1st row and 1st column
+        min_sum = [[0] * n for i in xrange(m)]
+        min_sum[0][0] = grid[0][0]
+        for i in xrange(1, m): min_sum[i][0] = min_sum[i - 1][0] + grid[i][0]
+        for j in xrange(1, n): min_sum[0][j] = min_sum[0][j - 1] + grid[0][j]
+        # dp
+        for i in xrange(1, m):
+            for j in xrange(1, n):
+                min_sum[i][j] = grid[i][j] + min(min_sum[i - 1][j], min_sum[i][j- 1])
+        return min_sum[m - 1][n - 1]
