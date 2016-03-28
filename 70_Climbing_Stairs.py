@@ -1,9 +1,12 @@
-# 2015-05-22  Runtime: 56 ms
-class Solution:
-    # @param {integer} n
-    # @return {integer}
+# 2016-03-28  45 tests, 36 ms
+class Solution(object):
     def climbStairs(self, n):
-        # Let f(n) is the number of distinct ways, f(n) = f(n-1) + f(n-2), f(0) = 1, f(1) = 1, f(2) = 2
-        a, b = 1, 1
-        for i in xrange(n - 1): a, b = b, a + b
+        """
+        :type n: int
+        :rtype: int
+        """
+        if n == 1: return 1
+        if n == 2: return 2
+        a, b = 1, 2
+        for i in xrange(n - 2): a, b = b, a + b
         return b
