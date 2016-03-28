@@ -1,4 +1,4 @@
-# 2015-06-18  Runtime: 60 ms
+# 2016-03-27  294 tests, 64 ms
 class Solution(object):
     def addBinary(self, a, b):
         """
@@ -6,15 +6,13 @@ class Solution(object):
         :type b: str
         :rtype: str
         """
-        char2int = {'0': 0, '1': 1}
-        i, j, carry, res = len(a) - 1, len(b) - 1, 0, []
-        while i >= 0 or j >= 0 or carry:
-            if i >= 0:
-                carry += char2int[a[i]]
-                i -= 1
-            if j >= 0:
-                carry += char2int[b[j]]
-                j -= 1
-            res.append(chr(carry % 2 + 48))
-            carry /= 2
-        return ''.join(res[::-1])
+        a, b = [ord(ch) - 48 for ch in a[::-1]], [ord(ch) - 48 for ch in b[::-1]]
+        carry, result, len_a, len_b = 0, [0] * max(len(a), len(b)), len(a), len(b)
+        for i in xrange(max(len_a, len_b)):
+            s = carry
+            if i < len_a: s += a[i]
+            if i < len_b: s += b[i]
+            carry, remainder = divmod(s, 2)
+            result[i] = chr(remainder + 48)
+        if carry: result.append('1')
+        return ''.join(result[::-1])
