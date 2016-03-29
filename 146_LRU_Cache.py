@@ -1,50 +1,58 @@
-# 2015-08-18  Runtime: 200 ms
-class LRUCache:
-    # dictionary + doubly linked list, see the picture in http://www.programcreek.com/2013/03/leetcode-lru-cache-java/
-    class Node:
-        def __init__(self, key, val):
-            self.key, self.val = key, val
+# 2016-03-28  17 tests, 204 ms
+class LRUCache(object):
+
+    class ListNode(object):
+        def __init__(self, k, v):
+            self.k, self.v = k, v
             self.prev, self.next = None, None
 
-    # @param capacity, an integer
     def __init__(self, capacity):
-        self._capacity, self._size, self._d = capacity, 0, {}
-        self._head, self._tail = self.Node(0, 0), self.Node(0, 0)
-        self._head.next, self._tail.prev = self._tail, self._head
+        """
+        :type capacity: int
+        """
+        self.capacity, self.size, self.d = capacity, 0, {}
+        self.head, self.tail = self.ListNode(0, 0), self.ListNode(0, 0)
+        self.head.next, self.tail.prev = self.tail, self.head
 
-    # @return an integer
-    def get(self, key):
-        if key not in self._d:
-            return -1
-        self._unlinkNode(self._d[key])
-        self._insertNodeAtFirst(self._d[key])
-        return self._d[key].val
-
-    # @param key, an integer
-    # @param value, an integer
-    # @return nothing
-    def set(self, key, val):
-        if key in self._d:
-            self._unlinkNode(self._d[key])
-            self._insertNodeAtFirst(self._d[key])
-            self._d[key].val = val
-        else:
-            if self._size == self._capacity:
-                del self._d[self._tail.prev.key]
-                self._unlinkNode(self._tail.prev)
-            else:
-                self._size += 1
-            self._d[key] = self.Node(key, val)
-            self._insertNodeAtFirst(self._d[key])
-            
-    def _unlinkNode(self, node):
+    def __unlink_node(self, node):
         node.prev.next = node.next
         node.next.prev = node.prev
-        node.prev = None
-        node.next = None
+        node.prev, node.next = None, None
 
-    def _insertNodeAtFirst(self, node):
-        node.prev = self._head
-        node.next = self._head.next
-        self._head.next.prev = node
-        self._head.next = node
+    def __insert_at_head(self, node):
+        node.prev, node.next = self.head, self.head.next
+        self.head.next.prev = node
+        self.head.next = node
+
+    def get(self, key):
+        """
+        :rtype: int
+        """
+        if key not in self.d:
+            return -1
+        node = self.d[key]
+        self.__unlink_node(node)
+        self.__insert_at_head(node)
+        return node.v
+
+    def set(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: nothing
+        """
+        if key in self.d:  # hit
+            node = self.d[key]
+            node.v = value
+            self.__unlink_node(node)
+            self.__insert_at_head(node)
+        else:  # insert
+            if self.size == self.capacity:
+                least_recently_used_node = self.tail.prev
+                self.__unlink_node(least_recently_used_node)
+                del self.d[least_recently_used_node.k]
+                self.size -= 1
+            new_node = self.ListNode(key, value)
+            self.__insert_at_head(new_node)
+            self.d[key] = new_node
+            self.size += 1
